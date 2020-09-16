@@ -20,11 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-project(main) 
+project(TestFlowWidget) 
 
 include( include.cmake )
 include( ${CMAKE_SOURCE_DIR}/SABUtils/Project.cmake )
-add_executable( main WIN32
+add_executable( TestFlowWidget WIN32
                  ${project_SRCS} 
                  ${project_H} 
                  ${qtproject_SRCS} 
@@ -40,15 +40,15 @@ add_executable( main WIN32
                  ${_CMAKE_FILES}
                  ${_CMAKE_MODULE_FILES}
           )
-set_target_properties( main PROPERTIES FOLDER Apps )
+set_target_properties( TestFlowWidget PROPERTIES FOLDER Apps )
           
-target_link_libraries( main 
+target_link_libraries( TestFlowWidget 
                  Qt5::Widgets
                  Qt5::Core
                  SABUtils
           )
-DeployQt( main . )
-DeploySystem( main )
+DeployQt( TestFlowWidget . )
+DeploySystem( TestFlowWidget )
 
 INSTALL( TARGETS ${PROJECT_NAME} RUNTIME DESTINATION . )
 INSTALL( FILES ${CMAKE_CURRENT_BINARY_DIR}/Debug/${PROJECT_NAME}.pdb DESTINATION . CONFIGURATIONS Debug )
