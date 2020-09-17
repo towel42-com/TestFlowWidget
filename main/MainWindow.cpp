@@ -33,7 +33,17 @@ CMainWindow::CMainWindow( QWidget* parent )
         auto subFlowItem22 = new CFlowWidgetItem( stateID++, "SubFlowItem 3-2-1", QIcon( ":/Entity.png" ), subFlowItem2 );
     }
 
-    fImpl->flowWidget->show();
+    //fImpl->flowWidget->show();
+    auto lText = fImpl->flowWidget->mDump( false );
+    fImpl->jsonData->setPlainText( lText );
+
+    fImpl->takeButton->setEnabled( false );
+    fImpl->placeButton->setEnabled( false );
+    fImpl->hideButton->setEnabled( false );
+    fImpl->unhideButton->setEnabled( false );
+    fImpl->disableButton->setEnabled( false );
+    fImpl->enableButton->setEnabled( false );
+
     connect( fImpl->takenItems, &QListWidget::itemSelectionChanged,
              [this]()
     {
@@ -48,6 +58,13 @@ CMainWindow::CMainWindow( QWidget* parent )
         fImpl->unhideButton->setEnabled( lSelected.size() == 1 );
     } );
 
+    connect( fImpl->disabledItems, &QListWidget::itemSelectionChanged,
+             [this]()
+    {
+        auto lSelected = fImpl->disabledItems->selectedItems();
+        fImpl->enableButton->setEnabled( lSelected.size() == 1 );
+    } );
+
     connect( fImpl->setText, &QAbstractButton::clicked,
              [this]()
     {
@@ -60,25 +77,38 @@ CMainWindow::CMainWindow( QWidget* parent )
             txt = txt.mid( pos + 1 );
         selected->mSetText( txt );
     } );
+    connect( fImpl->setToolTip, &QAbstractButton::clicked,
+             [this]()
+    {
+        auto selected = fImpl->flowWidget->mSelectedItem();
+        if ( !selected )
+            return;
+        selected->mSetToolTip( fImpl->toolTip->text() );
+    } );
 
     connect( fImpl->flowWidget, &CFlowWidget::sigFlowWidgetItemSelected,
              [this]( CFlowWidgetItem* xItem, bool xSelected )
     {
         fImpl->takeButton->setEnabled( xItem );
-
-        auto lSelected = fImpl->takenItems->selectedItems();
-        fImpl->placeButton->setEnabled( (lSelected.size() == 1) && (fImpl->flowWidget->mSelectedItem()->mIsTopLevelItem() == xItem->mIsTopLevelItem()) );
-
+        fImpl->disableButton->setEnabled( xItem );
         fImpl->hideButton->setEnabled( xItem );
 
-        QString lText;
-        if ( xItem && xSelected )
-        {
-            lText = xItem->mFullText();
-        }
-        fImpl->selected->setText( lText );
+        auto lSelected = fImpl->takenItems->selectedItems();
+        fImpl->placeButton->setEnabled( xItem && (lSelected.size() == 1) && (fImpl->flowWidget->mSelectedItem()->mIsTopLevelItem() == xItem->mIsTopLevelItem()) );
+
         if ( xItem )
+        {
+            QString lText;
+            if ( xSelected )
+            {
+                lText = xItem->mFullText();
+            }
+            fImpl->selected->setText( lText );
             fImpl->toolTip->setText( xItem->mToolTip() );
+
+            lText = xItem->mDump( true, false );
+            fImpl->jsonData->setPlainText( lText );
+        }
     } );
 
     connect( fImpl->flowWidget, &CFlowWidget::sigFlowWidgetItemDoubleClicked,
@@ -117,6 +147,8 @@ CMainWindow::CMainWindow( QWidget* parent )
         lwItem->setData( Qt::UserRole + 1, lValue );
         fImpl->takenItems->addItem( lwItem );
 
+        auto lText = fImpl->flowWidget->mDump( false );
+        fImpl->jsonData->setPlainText( lText );
     } );
     connect( fImpl->placeButton, &QAbstractButton::clicked,
              [this]()
@@ -156,6 +188,10 @@ CMainWindow::CMainWindow( QWidget* parent )
                 fImpl->flowWidget->mAddTopLevelItem( xSelected );
             }
         }
+
+        auto lText = fImpl->flowWidget->mDump( false );
+        fImpl->jsonData->setPlainText( lText );
+
         delete selected.front();
     } );
     connect( fImpl->hideButton, &QAbstractButton::clicked,
@@ -188,16 +224,34 @@ CMainWindow::CMainWindow( QWidget* parent )
         delete selected.front();
     } );
 
-    fImpl->takeButton->setEnabled( false );
-    fImpl->placeButton->setEnabled( false );
-
-    connect( fImpl->setToolTip, &QAbstractButton::clicked,
+    connect( fImpl->disableButton, &QAbstractButton::clicked,
              [this]()
     {
-        auto selected = fImpl->flowWidget->mSelectedItem();
-        if ( !selected )
+        auto xItem = fImpl->flowWidget->mSelectedItem();
+        if ( !xItem )
             return;
-        selected->mSetToolTip( fImpl->toolTip->text() );
+
+        xItem->mSetDisabled( true );
+        auto lwItem = new QListWidgetItem( xItem->mFullText() );
+        QVariant lValue;
+        lValue.setValue( xItem );
+        lwItem->setData( Qt::UserRole + 1, lValue );
+        fImpl->disabledItems->addItem( lwItem );
+
+    } );
+    connect( fImpl->enableButton, &QAbstractButton::clicked,
+             [this]()
+    {
+        auto selected = fImpl->disabledItems->selectedItems();
+        if ( selected.count() != 1 )
+            return;
+
+        auto selectedItem = selected.front()->data( Qt::UserRole + 1 ).value< CFlowWidgetItem* >();
+        if ( !selectedItem )
+            return;
+
+        selectedItem->mSetEnabled( true );
+        delete selected.front();
     } );
 }
 
