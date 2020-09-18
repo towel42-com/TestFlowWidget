@@ -12,6 +12,7 @@ public:
     CMainWindow( QWidget *parent = 0);
     ~CMainWindow();
 
+    void mDumpFlowWidget();
 private:
     std::unique_ptr< Ui::CMainWindow > fImpl;
 };

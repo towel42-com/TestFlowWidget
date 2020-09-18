@@ -1,6 +1,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"  
 
+#include <QInputDialog>
 CMainWindow::CMainWindow( QWidget* parent )
     : QDialog( parent ),
     fImpl( new Ui::CMainWindow )
@@ -34,8 +35,7 @@ CMainWindow::CMainWindow( QWidget* parent )
     }
 
     //fImpl->flowWidget->show();
-    auto lText = fImpl->flowWidget->mDump( false );
-    fImpl->jsonData->setPlainText( lText );
+    mDumpFlowWidget();
 
     fImpl->takeButton->setEnabled( false );
     fImpl->placeButton->setEnabled( false );
@@ -47,22 +47,25 @@ CMainWindow::CMainWindow( QWidget* parent )
     connect( fImpl->takenItems, &QListWidget::itemSelectionChanged,
              [this]()
     {
-        auto lSelected = fImpl->takenItems->selectedItems();
-        fImpl->placeButton->setEnabled( (lSelected.size() == 1) );
+        fImpl->placeButton->setEnabled( (fImpl->takenItems->selectedItems().size() == 1) );
     } );
 
     connect( fImpl->hiddenItems, &QListWidget::itemSelectionChanged,
              [this]()
     {
-        auto lSelected = fImpl->hiddenItems->selectedItems();
-        fImpl->unhideButton->setEnabled( lSelected.size() == 1 );
+        fImpl->unhideButton->setEnabled( fImpl->hiddenItems->selectedItems().size() == 1 );
     } );
 
     connect( fImpl->disabledItems, &QListWidget::itemSelectionChanged,
              [this]()
     {
-        auto lSelected = fImpl->disabledItems->selectedItems();
-        fImpl->enableButton->setEnabled( lSelected.size() == 1 );
+        fImpl->enableButton->setEnabled( fImpl->disabledItems->selectedItems().size() == 1 );
+    } );
+
+    connect( fImpl->dumpFlowWidgetBtn, &QPushButton::clicked,
+             [this]()
+    {
+        mDumpFlowWidget();
     } );
 
     connect( fImpl->setText, &QAbstractButton::clicked,
@@ -93,8 +96,9 @@ CMainWindow::CMainWindow( QWidget* parent )
         fImpl->disableButton->setEnabled( xItem );
         fImpl->hideButton->setEnabled( xItem );
 
-        auto lSelected = fImpl->takenItems->selectedItems();
-        fImpl->placeButton->setEnabled( xItem && (lSelected.size() == 1) && (fImpl->flowWidget->mSelectedItem()->mIsTopLevelItem() == xItem->mIsTopLevelItem()) );
+        fImpl->unhideButton->setEnabled( (fImpl->hiddenItems->selectedItems().size() == 1) && (fImpl->flowWidget->mSelectedItem() != nullptr) );
+        fImpl->enableButton->setEnabled( (fImpl->disabledItems->selectedItems().size() == 1) && (fImpl->flowWidget->mSelectedItem() != nullptr) );
+        fImpl->placeButton->setEnabled( (fImpl->takenItems->selectedItems().size() == 1) );
 
         if ( xItem )
         {
@@ -147,52 +151,76 @@ CMainWindow::CMainWindow( QWidget* parent )
         lwItem->setData( Qt::UserRole + 1, lValue );
         fImpl->takenItems->addItem( lwItem );
 
-        auto lText = fImpl->flowWidget->mDump( false );
-        fImpl->jsonData->setPlainText( lText );
+        mDumpFlowWidget();
     } );
     connect( fImpl->placeButton, &QAbstractButton::clicked,
              [this]()
     {
-        auto selected = fImpl->takenItems->selectedItems();
-        if ( selected.count() != 1 )
+        auto lSelectedTaken = fImpl->takenItems->selectedItems();
+        if ( lSelectedTaken.count() != 1 )
             return;
 
-        auto xSelected = selected.front()->data( Qt::UserRole + 1 ).value< CFlowWidgetItem* >();
-        if ( !xSelected )
+        auto lListWidgetItem = lSelectedTaken.front();
+        auto lTakenItem = lListWidgetItem->data( Qt::UserRole + 1 ).value< CFlowWidgetItem* >();
+        if ( !lTakenItem )
             return;
 
-        auto xItem = fImpl->flowWidget->mSelectedItem();
+        delete lListWidgetItem;
 
-        if ( xSelected->mIsTopLevelItem() )
+        auto lItemSelected = fImpl->flowWidget->mSelectedItem();
+        auto lItemParent = lItemSelected ? lItemSelected->mParentItem() : nullptr;
+
+        auto lItems = QStringList();
+        if ( lItemSelected != nullptr )
         {
-            int lIndex = -1;
-            if ( xItem && !xItem->mIsTopLevelItem() )
-            {
-                while ( xItem && !xItem->mIsTopLevelItem() )
-                {
-                    xItem = xItem->mParentItem();
-                }
-                if ( !xItem )
-                    return;
-            }
-
-            if ( xItem )
-                lIndex = fImpl->flowWidget->mIndexOfTopLevelItem( xItem );
-            fImpl->flowWidget->mInsertTopLevelItem( lIndex, xSelected );
+            if ( lItemParent )
+                lItems << tr( "Before Current Selection" ) << tr( "After Current Selection" );
+            lItems << tr( "Append as Child of Current Selection" ) << tr( "Insert as First Child of Current Selection" );
         }
-        else // its a child item
+        lItems << tr( "Append Top Level Item" ) << tr( "Insert as First Top Level Item" );
+
+        bool aOK = false;
+        QString lLabel;
+        if ( lItemSelected )
+            lLabel = tr( "Current Selection: %1" ).arg( lItemSelected->mFullText() );
+        if ( lItemParent )
+            lLabel += "\n" + tr( "Parent of Selection: %1" ).arg( lItemParent->mFullText() );
+        
+        if ( !lLabel.isEmpty() )
+            lLabel += "\n";
+        lLabel = tr( "Place Where:" );
+        auto lSelected = QInputDialog::getItem( this, tr( "Place Where:" ), tr( "Place Where:" ), lItems, 0, false, &aOK );
+        if ( !aOK )
+            return;
+
+        if ( lSelected == tr( "Append Top Level Item" ) )
         {
-            auto lIndex = xItem ? xItem->mIndexInParent() : -1;
-            if ( xItem && !xItem->mParentItem() )
+            fImpl->flowWidget->mAddTopLevelItem( lTakenItem );
+        }
+        else if ( lSelected == tr( "Insert as First Top Level Item" ) )
+        {
+            fImpl->flowWidget->mInsertTopLevelItem( 0, lTakenItem );
+        }
+        else if ( lItemSelected )
+        {
+            if ( lItemParent && ( lSelected == tr( "Before Current Selection" ) ) )
             {
-                fImpl->flowWidget->mAddTopLevelItem( xSelected );
+                lItemParent->mInsertChild( lItemSelected, lTakenItem, true );
+            }
+            else if ( lItemParent && ( lSelected == tr( "After Current Selection" ) ) )
+            {
+                lItemParent->mInsertChild( lItemSelected, lTakenItem, false );
+            }
+            else if ( lSelected == tr( "Append as Child of Current Selection" ) )
+            {
+                lItemSelected->mAddChild( lItemSelected );
+            }
+            else if ( lSelected == tr( "Insert as First Child of Current Selection" ) )
+            {
+                lItemSelected->mInsertChild( 0, lItemSelected );
             }
         }
-
-        auto lText = fImpl->flowWidget->mDump( false );
-        fImpl->jsonData->setPlainText( lText );
-
-        delete selected.front();
+        mDumpFlowWidget();
     } );
     connect( fImpl->hideButton, &QAbstractButton::clicked,
              [this]()
@@ -257,3 +285,9 @@ CMainWindow::CMainWindow( QWidget* parent )
 
 CMainWindow::~CMainWindow()
 {}
+
+void CMainWindow::mDumpFlowWidget()
+{
+    auto lText = fImpl->flowWidget->mDump( false );
+    fImpl->jsonData->setPlainText( lText );
+}
