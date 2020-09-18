@@ -173,23 +173,22 @@ CMainWindow::CMainWindow( QWidget* parent )
         auto lItems = QStringList();
         if ( lItemSelected != nullptr )
         {
-            if ( lItemParent )
-                lItems << tr( "Before Current Selection" ) << tr( "After Current Selection" );
+            lItems << tr( "Before Current Selection" ) << tr( "After Current Selection" );
             lItems << tr( "Append as Child of Current Selection" ) << tr( "Insert as First Child of Current Selection" );
         }
         lItems << tr( "Append Top Level Item" ) << tr( "Insert as First Top Level Item" );
 
         bool aOK = false;
-        QString lLabel;
+        QString lPrefix;
         if ( lItemSelected )
-            lLabel = tr( "Current Selection: %1" ).arg( lItemSelected->mFullText() );
+            lPrefix = tr( "<li>Current Selection: %1</li>" ).arg( lItemSelected->mFullText() );
         if ( lItemParent )
-            lLabel += "\n" + tr( "Parent of Selection: %1" ).arg( lItemParent->mFullText() );
+            lPrefix += tr( "<li>Parent of Selection: %1</li>" ).arg( lItemParent->mFullText() );
         
-        if ( !lLabel.isEmpty() )
-            lLabel += "\n";
-        lLabel = tr( "Place Where:" );
-        auto lSelected = QInputDialog::getItem( this, tr( "Place Where:" ), tr( "Place Where:" ), lItems, 0, false, &aOK );
+        if ( !lPrefix.isEmpty() )
+            lPrefix = "<ul>" + lPrefix + "</ul>";
+        auto lLabel = lPrefix + tr( "Place Where:" );
+        auto lSelected = QInputDialog::getItem( this, tr( "Place Where:" ), lLabel, lItems, 0, false, &aOK );
         if ( !aOK )
             return;
 
@@ -203,13 +202,13 @@ CMainWindow::CMainWindow( QWidget* parent )
         }
         else if ( lItemSelected )
         {
-            if ( lItemParent && ( lSelected == tr( "Before Current Selection" ) ) )
+            if ( (lSelected == tr( "After Current Selection" )) || (lSelected == tr( "Before Current Selection" )) )
             {
-                lItemParent->mInsertChild( lItemSelected, lTakenItem, true );
-            }
-            else if ( lItemParent && ( lSelected == tr( "After Current Selection" ) ) )
-            {
-                lItemParent->mInsertChild( lItemSelected, lTakenItem, false );
+                bool lBefore = lSelected.startsWith( tr( "Before" ) );
+                if ( lItemParent )
+                    lItemParent->mInsertChild( lItemSelected, lTakenItem, lBefore );
+                else
+                    fImpl->flowWidget->mInsertTopLevelItem( lItemSelected, lTakenItem, lBefore );
             }
             else if ( lSelected == tr( "Append as Child of Current Selection" ) )
             {
