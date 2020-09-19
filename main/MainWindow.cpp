@@ -1,12 +1,17 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"  
+#include "SABUtils/qtdumper.h"
 
+#include <QTimer>
 #include <QInputDialog>
+#include <QStandardItemModel>
 CMainWindow::CMainWindow( QWidget* parent )
     : QDialog( parent ),
-    fImpl( new Ui::CMainWindow )
+    fImpl( new Ui::CMainWindow ),
+    fModel( new QStandardItemModel( this ) )
 {
     fImpl->setupUi( this );
+    fImpl->widgetDump->setModel( fModel );
 
     int stateID = 0;
     {
@@ -34,8 +39,7 @@ CMainWindow::CMainWindow( QWidget* parent )
         auto subFlowItem22 = new CFlowWidgetItem( stateID++, "SubFlowItem 3-2-1", QIcon( ":/Entity.png" ), subFlowItem2 );
     }
 
-    //fImpl->flowWidget->show();
-    mDumpFlowWidget();
+    QTimer::singleShot( 0, this, [this](){ mDumpFlowWidget(); } );
 
     fImpl->takeButton->setEnabled( false );
     fImpl->placeButton->setEnabled( false );
@@ -111,7 +115,7 @@ CMainWindow::CMainWindow( QWidget* parent )
             fImpl->toolTip->setText( xItem->mToolTip() );
 
             lText = xItem->mDump( true, false );
-            fImpl->jsonData->setPlainText( lText );
+            fImpl->jsonDump->setPlainText( lText );
         }
     } );
 
@@ -288,5 +292,26 @@ CMainWindow::~CMainWindow()
 void CMainWindow::mDumpFlowWidget()
 {
     auto lText = fImpl->flowWidget->mDump( false );
-    fImpl->jsonData->setPlainText( lText );
+    fImpl->jsonDump->setPlainText( lText );
+
+    dumpWidgetAndChildren( fImpl->flowWidget, fModel );
+    fImpl->widgetDump->expandAll();
+    mCollapseWidgetType( QModelIndex() );
+}
+
+void CMainWindow::mCollapseWidgetType( const QModelIndex& parent )
+{
+    if ( parent.isValid() )
+    {
+        if ( parent.data() == "Widget" )
+        {
+            auto subIdx = fModel->index( 0, 0, parent );
+            fImpl->widgetDump->setExpanded( subIdx, false );
+        }
+    }
+    for ( auto ii = 0; ii < fModel->rowCount( parent ); ++ii )
+    {
+        auto subIndex = fModel->index( ii, 0, parent );
+        mCollapseWidgetType( subIndex );
+    }
 }

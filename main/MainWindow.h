@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <memory>
 class CFlowWidgetItem;
+class QStandardItemModel;
 namespace Ui{ class CMainWindow; }
 class CMainWindow : public QDialog
 {
@@ -12,8 +13,10 @@ public:
     CMainWindow( QWidget *parent = 0);
     ~CMainWindow();
 
-    void mDumpFlowWidget();
 private:
+    void mDumpFlowWidget();
+    void mCollapseWidgetType( const QModelIndex& index );
+    QStandardItemModel * fModel;
     std::unique_ptr< Ui::CMainWindow > fImpl;
 };
 
