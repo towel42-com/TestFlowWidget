@@ -11,9 +11,11 @@ class CMainWindow : public QDialog
     Q_OBJECT
 public:
     CMainWindow( QWidget *parent = 0);
+
     ~CMainWindow();
 
 private:
+    void mResetFlowWidget();
     void mDumpFlowWidget();
     void mCollapseWidgetType( const QModelIndex& index );
     QStandardItemModel * fModel;

@@ -13,33 +13,7 @@ CMainWindow::CMainWindow( QWidget* parent )
     fImpl->setupUi( this );
     fImpl->widgetDump->setModel( fModel );
 
-    int stateID = 0;
-    {
-        auto flowItem = fImpl->flowWidget->mAddTopLevelItem( stateID++, "FlowItem 1" );
-        flowItem->mSetIcon( QIcon( ":/Entity.png" ) );
-        auto icon = flowItem->mIcon();
-        Q_ASSERT( !icon.isNull() );
-        auto subFlowItem1 = new CFlowWidgetItem( stateID++, "SubFlowItem 1-1", flowItem );
-        subFlowItem1->mSetIcon( QIcon( ":/Entity.png" ) );
-        auto subFlowItem12 = new CFlowWidgetItem( stateID++, "SubFlowItem 1-1-2", QIcon( ":/Entity.png" ), subFlowItem1 );
-        auto subFlowItem2 = new CFlowWidgetItem( stateID++, "SubFlowItem 1-2", flowItem );
-    }
-
-    {
-        auto  flowItem = new CFlowWidgetItem( stateID++, "FlowItem 2", fImpl->flowWidget );
-        auto subFlowItem1 = new CFlowWidgetItem( stateID++, "SubFlowItem 2-1", flowItem );
-        auto subFlowItem2 = fImpl->flowWidget->mAddItem( stateID++, "SubFlowItem 2-2", flowItem );
-        auto subFlowItem12 = new CFlowWidgetItem( stateID++, "SubFlowItem 2-2-1", QIcon( ":/Entity.png" ), subFlowItem2 );
-    }
-
-    {
-        auto  flowItem = new CFlowWidgetItem( stateID++, "FlowItem 3", fImpl->flowWidget );
-        auto subFlowItem1 = new CFlowWidgetItem( stateID++, "SubFlowItem 3-1", flowItem );
-        auto subFlowItem2 = new CFlowWidgetItem( stateID++, "SubFlowItem 3-2", flowItem );
-        auto subFlowItem22 = new CFlowWidgetItem( stateID++, "SubFlowItem 3-2-1", QIcon( ":/Entity.png" ), subFlowItem2 );
-    }
-
-    QTimer::singleShot( 0, this, [this](){ mDumpFlowWidget(); } );
+    mResetFlowWidget();
 
     fImpl->takeButton->setEnabled( false );
     fImpl->placeButton->setEnabled( false );
@@ -71,6 +45,12 @@ CMainWindow::CMainWindow( QWidget* parent )
     {
         mDumpFlowWidget();
     } );
+    connect( fImpl->resetButton, &QPushButton::clicked,
+             [this]()
+    {
+        mResetFlowWidget();
+    } );
+
 
     connect( fImpl->setText, &QAbstractButton::clicked,
              [this]()
@@ -284,6 +264,38 @@ CMainWindow::CMainWindow( QWidget* parent )
         selectedItem->mSetEnabled( true );
         delete selected.front();
     } );
+}
+
+void CMainWindow::mResetFlowWidget()
+{
+    fImpl->flowWidget->mClear();
+    int stateID = 0;
+    {
+        auto flowItem = fImpl->flowWidget->mAddTopLevelItem( stateID++, "FlowItem 1" );
+        flowItem->mSetIcon( QIcon( ":/Entity.png" ) );
+        auto icon = flowItem->mIcon();
+        Q_ASSERT( !icon.isNull() );
+        auto subFlowItem1 = new CFlowWidgetItem( stateID++, "SubFlowItem 1-1", flowItem );
+        subFlowItem1->mSetIcon( QIcon( ":/Entity.png" ) );
+        auto subFlowItem12 = new CFlowWidgetItem( stateID++, "SubFlowItem 1-1-2", QIcon( ":/Entity.png" ), subFlowItem1 );
+        auto subFlowItem2 = new CFlowWidgetItem( stateID++, "SubFlowItem 1-2", flowItem );
+    }
+
+    {
+        auto  flowItem = new CFlowWidgetItem( stateID++, "FlowItem 2", fImpl->flowWidget );
+        auto subFlowItem1 = new CFlowWidgetItem( stateID++, "SubFlowItem 2-1", flowItem );
+        auto subFlowItem2 = fImpl->flowWidget->mAddItem( stateID++, "SubFlowItem 2-2", flowItem );
+        auto subFlowItem12 = new CFlowWidgetItem( stateID++, "SubFlowItem 2-2-1", QIcon( ":/Entity.png" ), subFlowItem2 );
+    }
+
+    {
+        auto  flowItem = new CFlowWidgetItem( stateID++, "FlowItem 3", fImpl->flowWidget );
+        auto subFlowItem1 = new CFlowWidgetItem( stateID++, "SubFlowItem 3-1", flowItem );
+        auto subFlowItem2 = new CFlowWidgetItem( stateID++, "SubFlowItem 3-2", flowItem );
+        auto subFlowItem22 = new CFlowWidgetItem( stateID++, "SubFlowItem 3-2-1", QIcon( ":/Entity.png" ), subFlowItem2 );
+    }
+
+    QTimer::singleShot( 0, this, [this]() { mDumpFlowWidget(); } );
 }
 
 CMainWindow::~CMainWindow()
