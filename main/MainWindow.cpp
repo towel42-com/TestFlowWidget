@@ -297,6 +297,9 @@ void CMainWindow::mDumpFlowWidget()
     dumpWidgetAndChildren( fImpl->flowWidget, fModel );
     fImpl->widgetDump->expandAll();
     mCollapseWidgetType( QModelIndex() );
+ 
+    for ( auto ii = 0; ii < fModel->columnCount(); ++ii )
+        fImpl->widgetDump->resizeColumnToContents( ii );
 }
 
 void CMainWindow::mCollapseWidgetType( const QModelIndex& parent )
