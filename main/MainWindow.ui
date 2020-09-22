@@ -259,7 +259,7 @@
          </property>
         </spacer>
        </item>
-       <item row="0" column="0" colspan="3">
+       <item row="0" column="0" colspan="4">
         <widget class="QSplitter" name="splitter">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -269,6 +269,13 @@
         </widget>
        </item>
        <item row="1" column="2">
+        <widget class="QPushButton" name="resetButton">
+         <property name="text">
+          <string>Reset Flow Widget</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
         <widget class="QPushButton" name="dumpFlowWidgetBtn">
          <property name="text">
           <string>Dump Flow Widget</string>
@@ -276,9 +283,9 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QPushButton" name="resetButton">
+        <widget class="QPushButton" name="disableFlowWidget">
          <property name="text">
-          <string>Reset Flow Widget</string>
+          <string>Disable Flow Widget</string>
          </property>
         </widget>
        </item>
