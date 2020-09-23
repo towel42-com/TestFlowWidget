@@ -106,6 +106,16 @@
              </property>
             </spacer>
            </item>
+           <item row="1" column="2">
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>Set Status:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3" rowspan="2" colspan="2">
+            <widget class="QListWidget" name="statusList"/>
+           </item>
           </layout>
          </widget>
         </item>

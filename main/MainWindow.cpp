@@ -1,3 +1,4 @@
+#undef QT_NO_DEBUG_OUTPUT
 #include "MainWindow.h"
 #include "ui_MainWindow.h"  
 #include "SABUtils/qtdumper.h"
@@ -5,6 +6,7 @@
 #include <QTimer>
 #include <QInputDialog>
 #include <QStandardItemModel>
+#include <QDebug>
 CMainWindow::CMainWindow( QWidget* parent )
     : QDialog( parent ),
     fImpl( new Ui::CMainWindow ),
@@ -39,6 +41,8 @@ CMainWindow::CMainWindow( QWidget* parent )
     {
         fImpl->enableButton->setEnabled( fImpl->disabledItems->selectedItems().size() == 1 );
     } );
+
+    connect( fImpl->statusList, &QListWidget::itemChanged, this, &CMainWindow::slotStatusItemSelected );
 
     connect( fImpl->dumpFlowWidgetBtn, &QPushButton::clicked,
              [this]()
@@ -84,6 +88,9 @@ CMainWindow::CMainWindow( QWidget* parent )
         fImpl->enableButton->setEnabled( (fImpl->disabledItems->selectedItems().size() == 1) && (fImpl->flowWidget->mSelectedItem() != nullptr) );
         fImpl->placeButton->setEnabled( (fImpl->takenItems->selectedItems().size() == 1) );
 
+        disconnect( fImpl->statusList, &QListWidget::itemChanged, this, &CMainWindow::slotStatusItemSelected );
+
+        QList< int > lSelectedIDs;
         if ( xItem )
         {
             QString lText;
@@ -96,7 +103,19 @@ CMainWindow::CMainWindow( QWidget* parent )
 
             lText = xItem->mDump( true, false );
             fImpl->jsonDump->setPlainText( lText );
+
+            lSelectedIDs = xItem->mStateStatuses();
         }
+        for ( int ii = 0; ii < fImpl->statusList->count(); ++ii )
+        {
+            auto item = fImpl->statusList->item( ii );
+            if ( !item )
+                continue;
+            auto statusID = item->type() - QListWidgetItem::ItemType::UserType;
+            item->setCheckState( (lSelectedIDs.indexOf( statusID ) == -1) ? Qt::Unchecked : Qt::Checked );
+        }
+
+        connect( fImpl->statusList, &QListWidget::itemChanged, this, &CMainWindow::slotStatusItemSelected );
     } );
 
     connect( fImpl->flowWidget, &CFlowWidget::sigFlowWidgetItemDoubleClicked,
@@ -266,6 +285,10 @@ CMainWindow::CMainWindow( QWidget* parent )
     } );
 }
 
+CMainWindow::~CMainWindow()
+{
+}
+
 void CMainWindow::mResetFlowWidget()
 {
     fImpl->flowWidget->mClear();
@@ -295,11 +318,26 @@ void CMainWindow::mResetFlowWidget()
         auto subFlowItem22 = new CFlowWidgetItem( stateID++, "SubFlowItem 3-2-1", QIcon( ":/Entity.png" ), subFlowItem2 );
     }
 
+    mLoadStatuses();
+
     QTimer::singleShot( 0, this, [this]() { mDumpFlowWidget(); } );
 }
 
-CMainWindow::~CMainWindow()
-{}
+void CMainWindow::mLoadStatuses()
+{
+    fImpl->statusList->clear();
+    auto lStatuses = fImpl->flowWidget->mGetRegisteredStatuses();
+    for( auto && ii : lStatuses )
+    {
+        auto lCurr = new QListWidgetItem( std::get< 2 >( ii ), std::get< 1 >( ii ), nullptr, QListWidgetItem::ItemType::UserType+std::get< 0 >( ii ) );
+        if ( std::get< 0 >( ii ) == CFlowWidget::EStates::eDisabled )
+            lCurr->setFlags( lCurr->flags() & ~Qt::ItemIsSelectable );
+        lCurr->setFlags( lCurr->flags() | Qt::ItemIsUserCheckable );
+        lCurr->setIcon( std::get< 2 >( ii ) );
+        lCurr->setCheckState( Qt::Unchecked );
+        fImpl->statusList->addItem( lCurr );
+    }
+}
 
 void CMainWindow::mDumpFlowWidget()
 {
@@ -330,3 +368,20 @@ void CMainWindow::mCollapseWidgetType( const QModelIndex& parent )
         mCollapseWidgetType( subIndex );
     }
 }
+
+void CMainWindow::slotStatusItemSelected( QListWidgetItem * /*xListWidgetItem*/ )
+{
+    auto selectedItem = fImpl->flowWidget->mSelectedItem();
+    if ( !selectedItem )
+        return;
+
+    QList< int > states;
+    for ( int ii = 0; ii < fImpl->statusList->count(); ++ii )
+    {
+        auto item = fImpl->statusList->item( ii );
+        if ( !item || (item->checkState() != Qt::Checked) )
+            continue;
+        states << item->type() - QListWidgetItem::ItemType::UserType;
+    }
+    selectedItem->mSetStateStatus( states );
+};

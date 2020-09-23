@@ -5,16 +5,18 @@
 #include <memory>
 class CFlowWidgetItem;
 class QStandardItemModel;
+class QListWidgetItem;
 namespace Ui{ class CMainWindow; }
 class CMainWindow : public QDialog
 {
     Q_OBJECT
 public:
     CMainWindow( QWidget *parent = 0);
-
     ~CMainWindow();
-
+public Q_SLOTS:
+    void slotStatusItemSelected( QListWidgetItem* /*xListWidgetItem*/ );
 private:
+    void mLoadStatuses();
     void mResetFlowWidget();
     void mDumpFlowWidget();
     void mCollapseWidgetType( const QModelIndex& index );
