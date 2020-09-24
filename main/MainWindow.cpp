@@ -24,12 +24,19 @@ CMainWindow::CMainWindow( QWidget* parent )
     fImpl->unhideButton->setEnabled( false );
     fImpl->disableButton->setEnabled( false );
     fImpl->enableButton->setEnabled( false );
+    fImpl->elideTextInFlowWidget->setChecked( fImpl->flowWidget->mElideText() );
 
-    connect( fImpl->disableFlowWidget, &QPushButton::clicked,
+    connect( fImpl->elideTextInFlowWidget, &QCheckBox::clicked,
              [this]()
     {
-        fImpl->flowWidget->setEnabled( !fImpl->flowWidget->isEnabled() );
-        fImpl->disableFlowWidget->setText( fImpl->flowWidget->isEnabled() ? tr( "Disable Flow Widget" ) : tr( "Enable Flow Widget" ) );
+        fImpl->flowWidget->mSetElideText( fImpl->elideTextInFlowWidget->isChecked() );
+    } );
+
+    connect( fImpl->disableFlowWidget, &QCheckBox::clicked,
+             [this]()
+    {
+        fImpl->flowWidget->setEnabled( fImpl->disableFlowWidget->isChecked() );
+        fImpl->disableFlowWidget->setText( fImpl->disableFlowWidget->isChecked() ? tr( "Enable Flow Widget" ) : tr( "Disable Flow Widget" ) );
     } );
 
     connect( fImpl->takenItems, &QListWidget::itemSelectionChanged,
