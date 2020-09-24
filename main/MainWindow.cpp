@@ -5,6 +5,7 @@
 
 #include <QTimer>
 #include <QInputDialog>
+#include <QFileDialog>
 #include <QStandardItemModel>
 #include <QDebug>
 CMainWindow::CMainWindow( QWidget* parent )
@@ -55,6 +56,20 @@ CMainWindow::CMainWindow( QWidget* parent )
         mResetFlowWidget();
     } );
 
+    connect( fImpl->addCustomStatus, &QPushButton::clicked,
+             [this]()
+    {
+        auto lID = fImpl->flowWidget->mGetNextStatusID();
+        auto lDesc = QInputDialog::getText( this, tr( "Enter Description:" ), tr( "Enter Description:" ) );
+        if ( lDesc.isEmpty() )
+            return;
+        auto lPath = QFileDialog::getOpenFileName( this, tr( "Select Image File:" ), QString(), tr( "Images (*.png *.xpm *.jpg);;AllFiles(*.*)" ) );
+        if ( lPath.isEmpty() )
+            return;
+        QIcon lIcon = QIcon( lPath );
+        fImpl->flowWidget->mRegisterStateStatus( lID, lDesc, lIcon );
+        this->mLoadStatus( std::make_tuple( lID, lDesc, lIcon ) );
+    } );
 
     connect( fImpl->setText, &QAbstractButton::clicked,
              [this]()
@@ -329,14 +344,19 @@ void CMainWindow::mLoadStatuses()
     auto lStatuses = fImpl->flowWidget->mGetRegisteredStatuses();
     for( auto && ii : lStatuses )
     {
-        auto lCurr = new QListWidgetItem( std::get< 2 >( ii ), std::get< 1 >( ii ), nullptr, QListWidgetItem::ItemType::UserType+std::get< 0 >( ii ) );
-        if ( std::get< 0 >( ii ) == CFlowWidget::EStates::eDisabled )
-            lCurr->setFlags( lCurr->flags() & ~Qt::ItemIsSelectable );
-        lCurr->setFlags( lCurr->flags() | Qt::ItemIsUserCheckable );
-        lCurr->setIcon( std::get< 2 >( ii ) );
-        lCurr->setCheckState( Qt::Unchecked );
-        fImpl->statusList->addItem( lCurr );
+        mLoadStatus( ii );
     }
+}
+
+void CMainWindow::mLoadStatus( const std::tuple< int, QString, QIcon >& ii )
+{
+    auto lCurr = new QListWidgetItem( std::get< 2 >( ii ), std::get< 1 >( ii ), nullptr, QListWidgetItem::ItemType::UserType + std::get< 0 >( ii ) );
+    if ( std::get< 0 >( ii ) == CFlowWidget::EStates::eDisabled )
+        lCurr->setFlags( lCurr->flags() & ~Qt::ItemIsSelectable );
+    lCurr->setFlags( lCurr->flags() | Qt::ItemIsUserCheckable );
+    lCurr->setIcon( std::get< 2 >( ii ) );
+    lCurr->setCheckState( Qt::Unchecked );
+    fImpl->statusList->addItem( lCurr );
 }
 
 void CMainWindow::mDumpFlowWidget()

@@ -17,6 +17,9 @@ public Q_SLOTS:
     void slotStatusItemSelected( QListWidgetItem* /*xListWidgetItem*/ );
 private:
     void mLoadStatuses();
+
+    void mLoadStatus( const std::tuple< int, QString, QIcon > & ii );
+
     void mResetFlowWidget();
     void mDumpFlowWidget();
     void mCollapseWidgetType( const QModelIndex& index );
