@@ -25,6 +25,13 @@ CMainWindow::CMainWindow( QWidget* parent )
     fImpl->disableButton->setEnabled( false );
     fImpl->enableButton->setEnabled( false );
 
+    connect( fImpl->disableFlowWidget, &QPushButton::clicked,
+             [this]()
+    {
+        fImpl->flowWidget->setEnabled( !fImpl->flowWidget->isEnabled() );
+        fImpl->disableFlowWidget->setText( fImpl->flowWidget->isEnabled() ? tr( "Disable Flow Widget" ) : tr( "Enable Flow Widget" ) );
+    } );
+
     connect( fImpl->takenItems, &QListWidget::itemSelectionChanged,
              [this]()
     {

@@ -256,13 +256,6 @@
        <string>Dump</string>
       </property>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="1" column="2">
-        <widget class="QPushButton" name="resetButton">
-         <property name="text">
-          <string>Reset Flow Widget</string>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="0">
         <spacer name="horizontalSpacer_2">
          <property name="orientation">
@@ -276,7 +269,28 @@
          </property>
         </spacer>
        </item>
-       <item row="0" column="0" colspan="4">
+       <item row="1" column="4">
+        <widget class="QPushButton" name="dumpFlowWidgetBtn">
+         <property name="text">
+          <string>Dump Flow Widget</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QPushButton" name="resetButton">
+         <property name="text">
+          <string>Reset Flow Widget</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QPushButton" name="addCustomStatus">
+         <property name="text">
+          <string>Add Custom Status</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="5">
         <widget class="QSplitter" name="splitter">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -285,17 +299,10 @@
          <widget class="QTreeView" name="widgetDump"/>
         </widget>
        </item>
-       <item row="1" column="3">
-        <widget class="QPushButton" name="dumpFlowWidgetBtn">
+       <item row="1" column="2">
+        <widget class="QPushButton" name="disableFlowWidget">
          <property name="text">
-          <string>Dump Flow Widget</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QPushButton" name="addCustomStatus">
-         <property name="text">
-          <string>Add Custom Status</string>
+          <string>Disable Flow Widget</string>
          </property>
         </widget>
        </item>
@@ -320,6 +327,7 @@
   <tabstop>setToolTip</tabstop>
   <tabstop>doubleClicked</tabstop>
   <tabstop>hovered</tabstop>
+  <tabstop>statusList</tabstop>
   <tabstop>takenItems</tabstop>
   <tabstop>takeButton</tabstop>
   <tabstop>placeButton</tabstop>
@@ -330,6 +338,11 @@
   <tabstop>disableButton</tabstop>
   <tabstop>enableButton</tabstop>
   <tabstop>jsonDump</tabstop>
+  <tabstop>widgetDump</tabstop>
+  <tabstop>addCustomStatus</tabstop>
+  <tabstop>disableFlowWidget</tabstop>
+  <tabstop>resetButton</tabstop>
+  <tabstop>dumpFlowWidgetBtn</tabstop>
  </tabstops>
  <resources/>
  <connections/>
