@@ -279,8 +279,8 @@ void CMainWindow::slotFlowWidgetItemSelected( CFlowWidgetItem* xItem, bool xSele
     fImpl->disableButton->setEnabled( xItem );
     fImpl->hideButton->setEnabled( xItem );
 
-    fImpl->unhideButton->setEnabled( (fImpl->hiddenItems->selectedItems().size() == 1) && (fImpl->flowWidget->mSelectedItem() != nullptr) );
-    fImpl->enableButton->setEnabled( (fImpl->disabledItems->selectedItems().size() == 1) && (fImpl->flowWidget->mSelectedItem() != nullptr) );
+    fImpl->unhideButton->setEnabled( (fImpl->hiddenItems->selectedItems().size() == 1) && (xItem != nullptr) );
+    fImpl->enableButton->setEnabled( (fImpl->disabledItems->selectedItems().size() == 1) && (xItem != nullptr) );
     fImpl->placeButton->setEnabled( (fImpl->takenItems->selectedItems().size() == 1) );
 
     disconnect( fImpl->statusList, &QListWidget::itemChanged, this, &CMainWindow::slotStatusItemSelected );
