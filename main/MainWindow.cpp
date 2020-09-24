@@ -102,42 +102,7 @@ CMainWindow::CMainWindow( QWidget* parent )
     connect( fImpl->flowWidget, &CFlowWidget::sigFlowWidgetItemSelected,
              [this]( CFlowWidgetItem* xItem, bool xSelected )
     {
-        fImpl->takeButton->setEnabled( xItem );
-        fImpl->disableButton->setEnabled( xItem );
-        fImpl->hideButton->setEnabled( xItem );
-
-        fImpl->unhideButton->setEnabled( (fImpl->hiddenItems->selectedItems().size() == 1) && (fImpl->flowWidget->mSelectedItem() != nullptr) );
-        fImpl->enableButton->setEnabled( (fImpl->disabledItems->selectedItems().size() == 1) && (fImpl->flowWidget->mSelectedItem() != nullptr) );
-        fImpl->placeButton->setEnabled( (fImpl->takenItems->selectedItems().size() == 1) );
-
-        disconnect( fImpl->statusList, &QListWidget::itemChanged, this, &CMainWindow::slotStatusItemSelected );
-
-        QList< int > lSelectedIDs;
-        if ( xItem )
-        {
-            QString lText;
-            if ( xSelected )
-            {
-                lText = xItem->mFullText();
-            }
-            fImpl->selected->setText( lText );
-            fImpl->toolTip->setText( xItem->mToolTip() );
-
-            lText = xItem->mDump( true, false );
-            fImpl->jsonDump->setPlainText( lText );
-
-            lSelectedIDs = xItem->mStateStatuses();
-        }
-        for ( int ii = 0; ii < fImpl->statusList->count(); ++ii )
-        {
-            auto item = fImpl->statusList->item( ii );
-            if ( !item )
-                continue;
-            auto statusID = item->type() - QListWidgetItem::ItemType::UserType;
-            item->setCheckState( (lSelectedIDs.indexOf( statusID ) == -1) ? Qt::Unchecked : Qt::Checked );
-        }
-
-        connect( fImpl->statusList, &QListWidget::itemChanged, this, &CMainWindow::slotStatusItemSelected );
+        slotFlowWidgetItemSelected( xItem, xSelected );
     } );
 
     connect( fImpl->flowWidget, &CFlowWidget::sigFlowWidgetItemDoubleClicked,
@@ -305,6 +270,47 @@ CMainWindow::CMainWindow( QWidget* parent )
         selectedItem->mSetEnabled( true );
         delete selected.front();
     } );
+    slotFlowWidgetItemSelected( fImpl->flowWidget->mSelectedItem(), true );
+}
+
+void CMainWindow::slotFlowWidgetItemSelected( CFlowWidgetItem* xItem, bool xSelected )
+{
+    fImpl->takeButton->setEnabled( xItem );
+    fImpl->disableButton->setEnabled( xItem );
+    fImpl->hideButton->setEnabled( xItem );
+
+    fImpl->unhideButton->setEnabled( (fImpl->hiddenItems->selectedItems().size() == 1) && (fImpl->flowWidget->mSelectedItem() != nullptr) );
+    fImpl->enableButton->setEnabled( (fImpl->disabledItems->selectedItems().size() == 1) && (fImpl->flowWidget->mSelectedItem() != nullptr) );
+    fImpl->placeButton->setEnabled( (fImpl->takenItems->selectedItems().size() == 1) );
+
+    disconnect( fImpl->statusList, &QListWidget::itemChanged, this, &CMainWindow::slotStatusItemSelected );
+
+    QList< int > lSelectedIDs;
+    if ( xItem )
+    {
+        QString lText;
+        if ( xSelected )
+        {
+            lText = xItem->mFullText();
+        }
+        fImpl->selected->setText( lText );
+        fImpl->toolTip->setText( xItem->mToolTip() );
+
+        lText = xItem->mDump( true, false );
+        fImpl->jsonDump->setPlainText( lText );
+
+        lSelectedIDs = xItem->mStateStatuses();
+    }
+    for ( int ii = 0; ii < fImpl->statusList->count(); ++ii )
+    {
+        auto item = fImpl->statusList->item( ii );
+        if ( !item )
+            continue;
+        auto statusID = item->type() - QListWidgetItem::ItemType::UserType;
+        item->setCheckState( (lSelectedIDs.indexOf( statusID ) == -1) ? Qt::Unchecked : Qt::Checked );
+    }
+
+    connect( fImpl->statusList, &QListWidget::itemChanged, this, &CMainWindow::slotStatusItemSelected );
 }
 
 CMainWindow::~CMainWindow()

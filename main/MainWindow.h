@@ -15,6 +15,7 @@ public:
     ~CMainWindow();
 public Q_SLOTS:
     void slotStatusItemSelected( QListWidgetItem* /*xListWidgetItem*/ );
+    void slotFlowWidgetItemSelected( CFlowWidgetItem* xItem, bool xSelected );
 private:
     void mLoadStatuses();
 
