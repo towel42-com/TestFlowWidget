@@ -1,0 +1,20 @@
+/* XPM */
+static char *timeout_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"30 10 4 1",
+"_ c #000000",
+". c #C7C9D6",
+"X c #E4E7F5",
+"o c #FFFFFF",
+/*_pixels_*/
+"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXo",
+"X.X.X.X.X.X.______X.X.X.X.X.._",
+"XX.X.X.X.X.X.o__oooX.X.X.X.X._",
+"X.X.X.X.X.X.X.__o.X.X.X.X.X.._",
+"XX.X.X.X.X.X.X__oX.X.X.X.X.X._",
+"X.X.X.X.X.X.X.__o.X.X.X.X.X.._",
+"XX.X.X.X.X.X.X__oX.X.X.X.X.X._",
+"X.X.X.X.X.X.______X.X.X.X.X.._",
+"X............oooooo.........._",
+"o_____________________________"
+};

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project_Setup>
+<Steps>
+      <Step>
+         <id>CMD_1</id>
+         <name>Project Setup</name>
+         <icon>prefsActive.png</icon>
+         <Step>
+            <id>CMD_1_2</id>
+            <name>Add Sources</name>
+            <icon>add.png</icon>
+            <ui>winIDEProjectManagerDesignInformationWidget</ui>
+         </Step>
+         <Step>
+            <id>CMD_1_3</id>
+            <name>Add Directives</name>
+            <icon>constraint16.png</icon>
+            <ui>winIDEProjectManagerProjectSettingsWidget</ui>
+         </Step>
+         <Step>
+            <id>CMD_1_4</id>
+            <name>Project Settings</name>
+            <icon>prefs.png</icon>
+            <ui>winIDEProjectManagerRunSettingsWidget</ui>
+         </Step>
+      </Step>
+       <Step>
+         <id>CMD_2</id>
+         <name>Design Analysis</name>
+         <icon>design.gif</icon>
+         <Step>
+            <id>CMD_2_1</id>
+            <name>Compile Design</name>
+            <icon>compile.gif</icon>
+            <ui></ui>
+         </Step>
+         <Step>
+            <id>CMD_2_2</id>
+            <name>Create Netlist</name>
+            <icon>compile.gif</icon>
+            <ui></ui>
+         </Step>
+         <Step>
+            <id>CMD_2_3</id>
+            <name>Run Clock Analysis</name>
+            <icon>compile.gif</icon>
+            <ui></ui>
+         </Step>
+         <Step>
+            <id>CMD_2_4</id>
+            <name>Run CDC Analysis</name>
+            <icon>compile.gif</icon>
+            <ui></ui>
+         </Step>
+         <Step>
+            <id>CMD_2_5</id>
+            <name>Design Errors/Warnings</name>
+            <icon>error_warning.gif</icon>
+            <ui></ui>
+         </Step>
+      </Step>
+
+</Steps>
+</Project_Setup>

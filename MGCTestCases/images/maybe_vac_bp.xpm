@@ -1,0 +1,18 @@
+/* XPM */
+static char * maybe_vac_bp_xpm[] = {
+"30 10 5 1",
+"Z	c #000000",
+".	c #FFE100",
+"+	c #068096",
+"@	c #0ADAFF",
+"#	c #FFFFFF",
+"ZZZ..@@@@@@@@@@@@@@@@@@@ZZZ..#",
+"ZZ...@@@@@@@ZZZZZ@@@@@@@ZZ...Z",
+"Z...Z@@@@@@@@ZZ#ZZ@@@@@@Z...ZZ",
+"...ZZ@@@@@@@@ZZ#ZZ#@@@@@...ZZZ",
+"..ZZZ@@@@@@@@ZZZZ##@@@@@..ZZZZ",
+".ZZZ.@@@@@@@@ZZ#ZZ@@@@@@.ZZZ.Z",
+"ZZZ..@@@@@@@@ZZ#ZZ#@@@@@ZZZ..Z",
+"ZZ...@@@@@@@ZZZZZ##@@@@@ZZ...Z",
+"Z...Z++++++++#####++++++Z...ZZ",
+"#ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"};

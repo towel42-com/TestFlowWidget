@@ -1,0 +1,24 @@
+/* XPM */
+static char *proven_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"30 10 8 1",
+"_ c #000000",
+". c #008200",
+"X c #00FF00",
+"o c #DAFFD9",
+"O c #FFFFFF",
+"+ c #000000",
+"@ c #000000",
+"# c #000000",
+/*_pixels_*/
+"oooooooooooooooooooooooooooooO",
+"oXXXXXXXXXXX_____XXXXXXXXXXX._",
+"oXXXXXXXXXXXX__O__XXXXXXXXXX._",
+"oXXXXXXXXXXXX__O__OXXXXXXXXX._",
+"oXXXXXXXXXXXX__O__OXXXXXXXXX._",
+"oXXXXXXXXXXXX____OOXXXXXXXXX._",
+"oXXXXXXXXXXXX__OOOXXXXXXXXXX._",
+"oXXXXXXXXXXX____XXXXXXXXXXXX._",
+"o............OOOO............_",
+"O_____________________________"
+};

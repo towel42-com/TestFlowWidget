@@ -1,0 +1,24 @@
+/* XPM */
+static char *fired_degraded_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"30 10 8 1",
+"_ c #000000",
+". c #80262D",
+"X c #FF2E2E",
+"o c #C73B46",
+"O c #FFE100",
+"+ c #FFFFFF",
+"@ c #000000",
+"# c #000000",
+/*_pixels_*/
+"___OOXXXXXXXXXXXXXXXXXXX___OO+",
+"__OOOooooooo++++++oooooo__OOO_",
+"_OOO_oooooooo++__+_ooooo_OOO__",
+"OOO__oooooooo++_+o_oooooOOO___",
+"OO___oooooooo++++_ooooooOO____",
+"O___Ooooooooo++_+_ooooooO___O_",
+"___OOoooooooo++_o_oooooo___OO_",
+"__OOOooooooo+++++ooooooo__OOO_",
+"_OOO_........_____......_OOO__",
+"+_____________________________"
+};

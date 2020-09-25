@@ -1,0 +1,20 @@
+/* XPM */
+static char *x_corruption_grey_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"30 10 4 1",
+"_ c #000000",
+". c #6A6A6A",
+"X c #949494",
+"o c None",
+/*_pixels_*/
+"ooooooo.__oooooooooXX_oooooooo",
+"oooooooo..__oooooXX__ooooooooo",
+"oooooooooo..__oXXX_ooooooooooo",
+"oooooooooooo.XXXX_oooooooooooo",
+"oooooooooooXXXX___oooooooooooo",
+"oooooooooXXXXX_..._ooooooooooo",
+"ooooooooXXXXX_o...._oooooooooo",
+"oooooooXXXXX_ooo...._ooooooooo",
+"ooooooXXXXX_ooooo...._oooooooo",
+"oooooXXXXX_ooooooo...._ooooooo"
+};

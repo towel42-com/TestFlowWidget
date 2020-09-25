@@ -1,0 +1,20 @@
+/* XPM */
+static char *ww_warnings_short_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"30 10 4 1",
+"_ c #000000",
+". c #FFE100",
+"X c #0000FF",
+"o c None",
+/*_pixels_*/
+"oooooXXoooooooXXooo___..oooooo",
+"oooooXXoooooooXXooo__...oooooo",
+"oooooXXoooooooXXooo_..._oooooo",
+"oooooXXoooooooXXooo...__oooooo",
+"oooooXXoooXoooXXooo..___oooooo",
+"oooooXXXoXXXoXXXooo.___.oooooo",
+"ooooooXXXXXXXXXoooo___..oooooo",
+"ooooooXXXXoXXXXoooo__...oooooo",
+"oooooooXXoooXXooooo_..._oooooo",
+"oooooooXXoooXXooooo...._oooooo"
+};

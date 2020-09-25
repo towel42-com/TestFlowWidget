@@ -1,0 +1,19 @@
+/* XPM */
+static char *question_short_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 10 3 1",
+"_ c #0000FF",
+". c #8F8FFF",
+"X c None",
+/*_pixels_*/
+"XXXXXX____XXXXXX",
+"XXXXX______XXXXX",
+"XXXX.__XX__.XXXX",
+"XXXX..XXX__.XXXX",
+"XXXXXXXX__.XXXXX",
+"XXXXXXX__.XXXXXX",
+"XXXXXXX__XXXXXXX",
+"XXXXXXXXXXXXXXXX",
+"XXXXXXX__XXXXXXX",
+"XXXXXXX__XXXXXXX"
+};

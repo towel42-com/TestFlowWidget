@@ -21,7 +21,8 @@ private:
 
     void mLoadStatus( const std::tuple< int, QString, QIcon > & ii );
 
-    void mResetFlowWidget();
+    void mDemoFlowWidget();
+    void mLoadFromXML();
     void mDumpFlowWidget();
     void mCollapseWidgetType( const QModelIndex& index );
     QStandardItemModel * fModel;

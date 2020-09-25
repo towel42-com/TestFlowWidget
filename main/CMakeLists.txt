@@ -45,6 +45,7 @@ set_target_properties( TestFlowWidget PROPERTIES FOLDER Apps )
 target_link_libraries( TestFlowWidget 
                  Qt5::Widgets
                  Qt5::Core
+                 Qt5::Xml
                  SABUtils
           )
 DeployQt( TestFlowWidget . )

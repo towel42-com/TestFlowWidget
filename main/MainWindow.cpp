@@ -8,6 +8,8 @@
 #include <QFileDialog>
 #include <QStandardItemModel>
 #include <QDebug>
+#include <QMessageBox>
+
 CMainWindow::CMainWindow( QWidget* parent )
     : QDialog( parent ),
     fImpl( new Ui::CMainWindow ),
@@ -16,7 +18,7 @@ CMainWindow::CMainWindow( QWidget* parent )
     fImpl->setupUi( this );
     fImpl->widgetDump->setModel( fModel );
 
-    mResetFlowWidget();
+    //mDemoFlowWidget();
 
     fImpl->takeButton->setEnabled( false );
     fImpl->placeButton->setEnabled( false );
@@ -64,10 +66,16 @@ CMainWindow::CMainWindow( QWidget* parent )
     {
         mDumpFlowWidget();
     } );
-    connect( fImpl->resetButton, &QPushButton::clicked,
+    connect( fImpl->demoFlowWidget, &QPushButton::clicked,
              [this]()
     {
-        mResetFlowWidget();
+        mDemoFlowWidget();
+    } );
+
+    connect( fImpl->loadFromXML, &QPushButton::clicked,
+             [this]()
+    {
+        mLoadFromXML();
     } );
 
     connect( fImpl->addCustomStatus, &QPushButton::clicked,
@@ -302,6 +310,9 @@ void CMainWindow::slotFlowWidgetItemSelected( CFlowWidgetItem* xItem, bool xSele
         }
         fImpl->selected->setText( lText );
         fImpl->toolTip->setText( xItem->mToolTip() );
+        fImpl->uiClassName->setText( xItem->mUIClassName() );
+        fImpl->stepID->setText( xItem->mStepID() );
+        fImpl->tclProcName->setText( xItem->mTclProcName() );
 
         lText = xItem->mDump( true, false );
         fImpl->jsonDump->setPlainText( lText );
@@ -324,33 +335,33 @@ CMainWindow::~CMainWindow()
 {
 }
 
-void CMainWindow::mResetFlowWidget()
+void CMainWindow::mDemoFlowWidget()
 {
     fImpl->flowWidget->mClear();
     int stateID = 0;
     {
-        auto flowItem = fImpl->flowWidget->mAddTopLevelItem( stateID++, "FlowItem 1" );
+        auto flowItem = fImpl->flowWidget->mAddTopLevelItem( QString( "State_%1" ).arg( stateID++ ), "FlowItem 1" );
         flowItem->mSetIcon( QIcon( ":/Entity.png" ) );
         auto icon = flowItem->mIcon();
         Q_ASSERT( !icon.isNull() );
-        auto subFlowItem1 = new CFlowWidgetItem( stateID++, "SubFlowItem 1-1", flowItem );
+        auto subFlowItem1 = new CFlowWidgetItem( QString( "State_%1" ).arg( stateID++ ), "SubFlowItem 1-1", flowItem );
         subFlowItem1->mSetIcon( QIcon( ":/Entity.png" ) );
-        auto subFlowItem12 = new CFlowWidgetItem( stateID++, "SubFlowItem 1-1-2", QIcon( ":/Entity.png" ), subFlowItem1 );
-        auto subFlowItem2 = new CFlowWidgetItem( stateID++, "SubFlowItem 1-2", flowItem );
+        auto subFlowItem12 = new CFlowWidgetItem( QString( "State_%1" ).arg( stateID++ ), "SubFlowItem 1-1-2", QIcon( ":/Entity.png" ), subFlowItem1 );
+        auto subFlowItem2 = new CFlowWidgetItem( QString( "State_%1" ).arg( stateID++ ), "SubFlowItem 1-2", flowItem );
     }
 
     {
-        auto  flowItem = new CFlowWidgetItem( stateID++, "FlowItem 2", fImpl->flowWidget );
-        auto subFlowItem1 = new CFlowWidgetItem( stateID++, "SubFlowItem 2-1", flowItem );
-        auto subFlowItem2 = fImpl->flowWidget->mAddItem( stateID++, "SubFlowItem 2-2", flowItem );
-        auto subFlowItem12 = new CFlowWidgetItem( stateID++, "SubFlowItem 2-2-1", QIcon( ":/Entity.png" ), subFlowItem2 );
+        auto  flowItem = new CFlowWidgetItem( QString( "State_%1" ).arg( stateID++ ), "FlowItem 2", fImpl->flowWidget );
+        auto subFlowItem1 = new CFlowWidgetItem( QString( "State_%1" ).arg( stateID++ ), "SubFlowItem 2-1", flowItem );
+        auto subFlowItem2 = fImpl->flowWidget->mAddItem( QString( "State_%1" ).arg( stateID++ ), "SubFlowItem 2-2", flowItem );
+        auto subFlowItem12 = new CFlowWidgetItem( QString( "State_%1" ).arg( stateID++ ), "SubFlowItem 2-2-1", QIcon( ":/Entity.png" ), subFlowItem2 );
     }
 
     {
-        auto  flowItem = new CFlowWidgetItem( stateID++, "FlowItem 3", fImpl->flowWidget );
-        auto subFlowItem1 = new CFlowWidgetItem( stateID++, "SubFlowItem 3-1", flowItem );
-        auto subFlowItem2 = new CFlowWidgetItem( stateID++, "SubFlowItem 3-2", flowItem );
-        auto subFlowItem22 = new CFlowWidgetItem( stateID++, "SubFlowItem 3-2-1", QIcon( ":/Entity.png" ), subFlowItem2 );
+        auto  flowItem = new CFlowWidgetItem( QString( "State_%1" ).arg( stateID++ ), "FlowItem 3", fImpl->flowWidget );
+        auto subFlowItem1 = new CFlowWidgetItem( QString( "State_%1" ).arg( stateID++ ), "SubFlowItem 3-1", flowItem );
+        auto subFlowItem2 = new CFlowWidgetItem( QString( "State_%1" ).arg( stateID++ ), "SubFlowItem 3-2", flowItem );
+        auto subFlowItem22 = new CFlowWidgetItem( QString( "State_%1" ).arg( stateID++ ), "SubFlowItem 3-2-1", QIcon( ":/Entity.png" ), subFlowItem2 );
     }
 
     mLoadStatuses();
@@ -425,3 +436,21 @@ void CMainWindow::slotStatusItemSelected( QListWidgetItem * /*xListWidgetItem*/ 
     }
     selectedItem->mSetStateStatus( states );
 };
+
+void CMainWindow::mLoadFromXML()
+{
+    auto lFileName = QFileDialog::getOpenFileName( this, tr( "Select File Name" ), QString(), QString( "XML Files (*.xml);;All Files (*.*)" ) );
+    if ( lFileName.isEmpty() )
+        return;
+
+    auto lRetVal = fImpl->flowWidget->mLoadFromXML( lFileName );
+    if ( !lRetVal.second.isEmpty() )
+    {
+        if ( lRetVal.first )
+            QMessageBox::information( this, tr( "Warning" ), lRetVal.second );
+        else
+            QMessageBox::critical( this, tr( "Error" ), lRetVal.second );
+    }
+    if ( lRetVal.first )
+        mLoadStatuses();
+}
