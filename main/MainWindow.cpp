@@ -217,11 +217,11 @@ CMainWindow::CMainWindow( QWidget* parent )
             }
             else if ( lSelected == tr( "Append as Child of Current Selection" ) )
             {
-                lItemSelected->mAddChild( lItemSelected );
+                lItemSelected->mAddChild( lTakenItem );
             }
             else if ( lSelected == tr( "Insert as First Child of Current Selection" ) )
             {
-                lItemSelected->mInsertChild( 0, lItemSelected );
+                lItemSelected->mInsertChild( 0, lTakenItem );
             }
         }
         mDumpFlowWidget();
