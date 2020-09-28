@@ -24,6 +24,7 @@ project(TestFlowWidget)
 
 include( include.cmake )
 include( ${CMAKE_SOURCE_DIR}/SABUtils/Project.cmake )
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 add_executable( TestFlowWidget WIN32
                  ${project_SRCS} 
                  ${project_H} 

@@ -1,7 +1,7 @@
 #undef QT_NO_DEBUG_OUTPUT
 #include "MainWindow.h"
 #include "ui_MainWindow.h"  
-#include "SABUtils/qtdumper.h"
+#include "SABUtils/QtDumper.h"
 
 #include <QTimer>
 #include <QInputDialog>
@@ -12,8 +12,8 @@
 
 CMainWindow::CMainWindow( QWidget* parent )
     : QDialog( parent ),
-    fImpl( new Ui::CMainWindow ),
-    fModel( new QStandardItemModel( this ) )
+    fModel( new QStandardItemModel( this ) ),
+    fImpl( new Ui::CMainWindow )
 {
     fImpl->setupUi( this );
     fImpl->widgetDump->setModel( fModel );
