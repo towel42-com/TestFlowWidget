@@ -3,6 +3,7 @@
 #include "SABUtils/FileUtils.h"
 #include <QApplication>
 #include <QDebug>
+#include <cstring>
 
 int main( int argc, char** argv )
 {
@@ -20,7 +21,8 @@ int main( int argc, char** argv )
     }
 
     CMainWindow dlg;
-    dlg.mLoadFromXML( lFileName );
+    if ( !lFileName.isEmpty() )
+        dlg.mLoadFromXML( lFileName );
     return dlg.exec();
 }
 
