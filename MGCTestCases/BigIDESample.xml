@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow_Navigator>
+<Steps>
+      <Step>
+         <id>CMD_1</id>
+         <name>Design Manager - From Sample</name>
+         <icon>design.gif</icon>
+         <ui>winIDENewDesignManagerWidget</ui>
+         <Step>
+            <id>CMD_1_2</id>
+            <name>Design Sources</name>
+            <icon>files.png</icon>
+            <ui>winIDENewDesignManagerSpecifyDesignSources</ui>
+            <Step>
+                <id>CMD_1_2_1</id>
+                <name>Library Mapping</name>
+                <icon>opt.gif</icon>
+                <ui>winIDENewLogicalPhysicalMapWidget</ui>
+            </Step>
+            <Step>
+                <id>CMD_1_2_2</id>
+                <name>Specify HDL</name>
+                <icon>vhdl.gif</icon>
+                <ui>winIDENewVLogVComDataWidget</ui>
+            </Step>
+         </Step>
+         <Step>
+            <id>CMD_2_2</id>
+            <name>IP Sources</name>
+            <icon>filelist.gif</icon>
+            <ui>winIDENewDesignManagerSpecifyIPSourcesInfo</ui>
+            <Step>
+                <id>CMD_2_2_1</id>
+                <name>Liberty</name>
+                <icon>cellAndLiberty.png</icon>
+                <ui>winIDENewLoadLibs</ui>
+            </Step>
+            <Step>
+                <id>CMD_2_2_3</id>
+                <name>FPGA</name>
+                <icon>grid.png</icon>
+                <ui>winIDENewSpecifyFPGA</ui>
+            </Step>
+            <Step>
+                <id>CMD_2_2_4</id>
+                <name>HDM</name>
+                <icon>hdm.gif</icon>
+                <ui>winIDENewSpecifyHDM</ui>
+            </Step>
+         </Step>
+         <Step>
+            <id>CMD_2_3</id>
+            <name>Constraints</name>
+            <icon>directives.gif</icon>
+            <ui>winIDENewDesignConstraint</ui>
+         </Step>
+         <Step>
+            <id>CMD_2_3_1</id>
+            <name>Run Design</name>
+            <icon>run.gif</icon>
+            <ui>winIDERunWidget</ui>
+                <Step>
+                    <id>CMD_2_3_2</id>
+                    <name>Messages</name>
+                    <icon>msgViewer.png</icon>
+                    <ui>winIDENewDummyTextEditWidget</ui>
+                </Step>
+         </Step>
+      </Step>
+      <Step>
+         <id>CMD_1</id>
+         <name>Project Setup - From Sample</name>
+         <icon>design.gif</icon>
+         <Step>
+            <id>CMD_1_1</id>
+            <name>Add Sources</name>
+            <icon>files.png</icon>
+            <ui>winIDEProjectManagerDesignInformationWidget</ui>
+         </Step>
+         <Step>
+            <id>CMD_1_2</id>
+            <name>Add Sources</name>
+            <icon>files.png</icon>
+            <ui>winIDEProjectManagerProjectSettingsWidget</ui>
+         </Step>
+         <Step>
+            <id>CMD_1_3</id>
+            <name>Add Sources</name>
+            <icon>files.png</icon>
+            <ui>winIDEProjectManagerRunSettingsWidget</ui>
+         </Step>
+      </Step>
+      <Step>
+         <id>CMD_1</id>
+         <name>Project Setup - Lint</name>
+         <icon>prefsActive.png</icon>
+         <Step>
+            <id>CMD_1_2</id>
+            <name>Add Sources</name>
+            <icon>Design_info.png</icon>
+            <ui>winIDEProjectManagerDesignInformationWidget</ui>
+         </Step>
+         <Step>
+            <id>CMD_1_3</id>
+            <name>Methodology</name>
+            <icon>Methodology.png</icon>
+            <ui>winLintMethodologyWidget</ui>
+         </Step>
+         <Step>
+            <id>CMD_1_4</id>
+            <name>Add Directives</name>
+            <icon>constraint16.png</icon>
+            <ui>winIDEProjectManagerProjectSettingsWidget</ui>
+         </Step>
+         <Step>
+            <id>CMD_1_5</id>
+            <name>Project Settings</name>
+            <icon>run_set_up.png</icon>
+            <ui>winIDEProjectManagerRunSettingsWidget</ui>
+         </Step>
+         <Step>
+            <id>CMD_1_6</id>
+            <name>Project Summary</name>
+            <icon>project_summary.png</icon>
+            <ui>winLintProjectSummaryWidget</ui>
+         </Step>
+      </Step>
+       <Step>
+         <id>CMD_2</id>
+         <name>Lint Analysis</name>
+         <icon>design.gif</icon>
+         <Step>
+            <id>CMD_2_1</id>
+            <name>Compile Design</name>
+            <icon>compile_design.png</icon>
+            <ui>winLintCompileDesignWidget</ui>
+         </Step>
+         <Step>
+            <id>CMD_2_2</id>
+            <name>Run Lint Analysis</name>
+            <icon>run_lint.png</icon>
+            <ui>winLintRunDesignWidget</ui>
+         </Step>
+      </Step>
+      <Step>
+         <id>CMD_1</id>
+         <name>Project Setup - CDC</name>
+         <icon>prefsActive.png</icon>
+         <Step>
+            <id>CMD_1_2</id>
+            <name>Add Sources</name>
+            <icon>add.png</icon>
+            <ui>winIDEProjectManagerDesignInformationWidget</ui>
+         </Step>
+         <Step>
+            <id>CMD_1_3</id>
+            <name>Add Directives</name>
+            <icon>constraint16.png</icon>
+            <ui>winIDEProjectManagerProjectSettingsWidget</ui>
+         </Step>
+         <Step>
+            <id>CMD_1_4</id>
+            <name>Project Settings</name>
+            <icon>prefs.png</icon>
+            <ui>winIDEProjectManagerRunSettingsWidget</ui>
+         </Step>
+      </Step>
+       <Step>
+         <id>CMD_2</id>
+         <name>Design Analysis - CDC</name>
+         <icon>design.gif</icon>
+         <Step>
+            <id>CMD_2_1</id>
+            <name>Compile Design</name>
+            <icon>compile.gif</icon>
+            <ui></ui>
+         </Step>
+         <Step>
+            <id>CMD_2_2</id>
+            <name>Create Netlist</name>
+            <icon>compile.gif</icon>
+            <ui></ui>
+         </Step>
+         <Step>
+            <id>CMD_2_3</id>
+            <name>Run Clock Analysis</name>
+            <icon>compile.gif</icon>
+            <ui></ui>
+         </Step>
+         <Step>
+            <id>CMD_2_4</id>
+            <name>Run CDC Analysis</name>
+            <icon>compile.gif</icon>
+            <ui></ui>
+         </Step>
+         <Step>
+            <id>CMD_2_5</id>
+            <name>Design Errors/Warnings</name>
+            <icon>error_warning.gif</icon>
+            <ui></ui>
+         </Step>
+      </Step>
+      <Step>
+         <id>CMD_1</id>
+         <name>Project Setup - RDC</name>
+         <icon>prefsActive.png</icon>
+         <Step>
+            <id>CMD_1_2</id>
+            <name>Add Sources</name>
+            <icon>add.png</icon>
+            <ui>winIDEProjectManagerDesignInformationWidget</ui>
+         </Step>
+         <Step>
+            <id>CMD_1_3</id>
+            <name>Add Directives</name>
+            <icon>constraint16.png</icon>
+            <ui>winIDEProjectManagerProjectSettingsWidget</ui>
+         </Step>
+         <Step>
+            <id>CMD_1_4</id>
+            <name>Project Settings</name>
+            <icon>prefs.png</icon>
+            <ui>winIDEProjectManagerRunSettingsWidget</ui>
+         </Step>
+      </Step>
+       <Step>
+         <id>CMD_2</id>
+         <name>Design Analysis - RDC</name>
+         <icon>design.gif</icon>
+         <Step>
+            <id>CMD_2_1</id>
+            <name>Compile Design</name>
+            <icon>compile.gif</icon>
+            <ui></ui>
+         </Step>
+         <Step>
+            <id>CMD_2_2</id>
+            <name>Create Netlist</name>
+            <icon>compile.gif</icon>
+            <ui></ui>
+         </Step>
+         <Step>
+            <id>CMD_2_2_1</id>
+            <name>Run Reset Analysis</name>
+            <icon>compile.gif</icon>
+            <ui></ui>
+         </Step>
+         <Step>
+            <id>CMD_2_3</id>
+            <name>Run RDC Analysis</name>
+            <icon>compile.gif</icon>
+            <ui></ui>
+         </Step>
+         <Step>
+            <id>CMD_2_4</id>
+            <name>Design Errors/Warnings</name>
+            <icon>error_warning.gif</icon>
+            <ui></ui>
+         </Step>
+      </Step>
+</Steps>
+</Flow_Navigator>
