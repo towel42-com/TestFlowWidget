@@ -13,6 +13,8 @@ class CMainWindow : public QDialog
 public:
     CMainWindow( QWidget *parent = 0);
     ~CMainWindow();
+
+    void mLoadFromXML( const QString & xFileName );
 public Q_SLOTS:
     void slotStatusItemSelected( QListWidgetItem* /*xListWidgetItem*/ );
     void slotFlowWidgetItemSelected( CFlowWidgetItem* xItem, bool xSelected );
@@ -23,6 +25,7 @@ private:
 
     void mDemoFlowWidget();
     void mLoadFromXML();
+
     void mDumpFlowWidget();
     void mCollapseWidgetType( const QModelIndex& index );
     QStandardItemModel * fModel;

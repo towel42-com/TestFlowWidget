@@ -9,7 +9,18 @@ int main( int argc, char** argv )
     QApplication appl( argc, argv );
     Q_INIT_RESOURCE( application );
 
+    QString lFileName;
+    for( int ii = 1; ii < argc; ++ii )
+    {
+        if ( std::strncmp( argv[ ii ], "-xml", 4 ) == 0 )
+        {
+            if ( ++ii < argc )
+                lFileName = argv[ ii ];
+        }
+    }
+
     CMainWindow dlg;
+    dlg.mLoadFromXML( lFileName );
     return dlg.exec();
 }
 

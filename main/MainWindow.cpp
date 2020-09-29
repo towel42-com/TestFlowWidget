@@ -467,7 +467,12 @@ void CMainWindow::mLoadFromXML()
     if ( lFileName.isEmpty() )
         return;
 
-    auto lRetVal = fImpl->flowWidget->mLoadFromXML( lFileName );
+    mLoadFromXML( lFileName );
+}
+
+void CMainWindow::mLoadFromXML( const QString & xFileName )
+{
+    auto lRetVal = fImpl->flowWidget->mLoadFromXML( xFileName );
     if ( !lRetVal.second.isEmpty() )
     {
         if ( lRetVal.first )
@@ -476,5 +481,9 @@ void CMainWindow::mLoadFromXML()
             QMessageBox::critical( this, tr( "Error" ), lRetVal.second );
     }
     if ( lRetVal.first )
+    {
         mLoadStatuses();
+        mDumpFlowWidget();
+    }
 }
+
