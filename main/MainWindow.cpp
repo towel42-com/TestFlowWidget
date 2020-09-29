@@ -334,6 +334,7 @@ void CMainWindow::slotFlowWidgetItemSelected( CFlowWidgetItem* xItem, bool xSele
             auto lKey = ii.first;
             auto lValue = ii.second;
             auto lCurr = new QTreeWidgetItem( fImpl->attributes, QStringList() << lKey << lValue );
+            (void)lCurr;
         }
 
         lText = xItem->mDump( true, false );
