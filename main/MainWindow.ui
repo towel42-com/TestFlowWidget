@@ -52,32 +52,33 @@
            <string>Selection</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_4">
-           <item row="4" column="2">
-            <widget class="QLabel" name="label_5">
-             <property name="text">
-              <string>Set Status:</string>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="selected">
+             <property name="readOnly">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
-           <item row="0" column="4">
-            <widget class="QLineEdit" name="toolTip"/>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label">
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_2">
              <property name="text">
-              <string>Selected/Clicked:</string>
+              <string>Double Clicked:</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="5">
-            <widget class="QToolButton" name="setToolTip">
+           <item row="3" column="0">
+            <widget class="QLabel" name="label_9">
              <property name="text">
-              <string>SetTT</string>
+              <string>Attributes</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="3" rowspan="2" colspan="2">
-            <widget class="QListWidget" name="statusList"/>
+           <item row="5" column="1">
+            <widget class="QLineEdit" name="tclProcName">
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
            </item>
            <item row="0" column="2">
             <widget class="QToolButton" name="setText">
@@ -86,46 +87,19 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="3">
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string>Step ID:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QLabel" name="label_2">
-             <property name="text">
-              <string>Double Clicked:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="3">
-            <widget class="QLabel" name="label_7">
-             <property name="text">
-              <string>UI Class Name:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="selected">
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="hovered">
              <property name="readOnly">
               <bool>true</bool>
              </property>
             </widget>
            </item>
-           <item row="0" column="6">
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+           <item row="4" column="0">
+            <widget class="QLabel" name="label_7">
+             <property name="text">
+              <string>UI Class Name:</string>
              </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
+            </widget>
            </item>
            <item row="0" column="3">
             <widget class="QLabel" name="label_4">
@@ -134,28 +108,14 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="0">
-            <widget class="QLabel" name="label_3">
-             <property name="text">
-              <string>Hovered:</string>
-             </property>
-            </widget>
-           </item>
-           <item row="5" column="1">
-            <widget class="QLineEdit" name="hovered">
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
            <item row="4" column="1">
-            <widget class="QLineEdit" name="doubleClicked">
+            <widget class="QLineEdit" name="uiClassName">
              <property name="readOnly">
               <bool>true</bool>
              </property>
             </widget>
            </item>
-           <item row="3" column="3">
+           <item row="5" column="0">
             <widget class="QLabel" name="label_8">
              <property name="text">
               <string>Tcl Proc Name:</string>
@@ -169,19 +129,80 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="4" colspan="2">
-            <widget class="QLineEdit" name="uiClassName">
+           <item row="0" column="4">
+            <widget class="QLineEdit" name="toolTip"/>
+           </item>
+           <item row="3" column="1">
+            <widget class="QTreeWidget" name="attributes">
+             <column>
+              <property name="text">
+               <string>Key</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>Value</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>Selected/Clicked:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="6" colspan="2">
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item row="3" column="3">
+            <widget class="QLabel" name="label_5">
+             <property name="text">
+              <string>Set Status:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="label_3">
+             <property name="text">
+              <string>Hovered:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3">
+            <widget class="QLabel" name="label_6">
+             <property name="text">
+              <string>Step ID:</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="doubleClicked">
              <property name="readOnly">
               <bool>true</bool>
              </property>
             </widget>
            </item>
-           <item row="3" column="4" colspan="2">
-            <widget class="QLineEdit" name="tclProcName">
-             <property name="readOnly">
-              <bool>true</bool>
+           <item row="0" column="5">
+            <widget class="QToolButton" name="setToolTip">
+             <property name="text">
+              <string>SetTT</string>
              </property>
             </widget>
+           </item>
+           <item row="3" column="4">
+            <widget class="QListWidget" name="statusList"/>
            </item>
           </layout>
          </widget>
@@ -443,12 +464,13 @@
   <tabstop>setText</tabstop>
   <tabstop>toolTip</tabstop>
   <tabstop>setToolTip</tabstop>
+  <tabstop>doubleClicked</tabstop>
   <tabstop>stepID</tabstop>
+  <tabstop>hovered</tabstop>
+  <tabstop>attributes</tabstop>
+  <tabstop>statusList</tabstop>
   <tabstop>uiClassName</tabstop>
   <tabstop>tclProcName</tabstop>
-  <tabstop>doubleClicked</tabstop>
-  <tabstop>hovered</tabstop>
-  <tabstop>statusList</tabstop>
   <tabstop>takenItems</tabstop>
   <tabstop>takeButton</tabstop>
   <tabstop>placeButton</tabstop>

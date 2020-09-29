@@ -311,6 +311,7 @@ void CMainWindow::slotFlowWidgetItemSelected( CFlowWidgetItem* xItem, bool xSele
     fImpl->enableButton->setEnabled( (fImpl->disabledItems->selectedItems().size() == 1) && (xItem != nullptr) );
     fImpl->placeButton->setEnabled( (fImpl->takenItems->selectedItems().size() == 1) );
 
+    fImpl->attributes->clear();
     disconnect( fImpl->statusList, &QListWidget::itemChanged, this, &CMainWindow::slotStatusItemSelected );
 
     QList< int > lSelectedIDs;
@@ -323,15 +324,24 @@ void CMainWindow::slotFlowWidgetItemSelected( CFlowWidgetItem* xItem, bool xSele
         }
         fImpl->selected->setText( lText );
         fImpl->toolTip->setText( xItem->mToolTip() );
-        fImpl->uiClassName->setText( xItem->mUIClassName() );
+        fImpl->uiClassName->setText( xItem->mGetAttribute( "ui" ) );
         fImpl->stepID->setText( xItem->mStepID() );
-        fImpl->tclProcName->setText( xItem->mTclProcName() );
+        fImpl->tclProcName->setText( xItem->mGetAttribute( "tclproc" ) );
+
+        auto lAllAttributes = xItem->mGetAttributes();
+        for( auto && ii : lAllAttributes )
+        {
+            auto lKey = ii.first;
+            auto lValue = ii.second;
+            auto lCurr = new QTreeWidgetItem( fImpl->attributes, QStringList() << lKey << lValue );
+        }
 
         lText = xItem->mDump( true, false );
         fImpl->jsonDump->setPlainText( lText );
 
         lSelectedIDs = xItem->mStateStatuses();
     }
+
     for ( int ii = 0; ii < fImpl->statusList->count(); ++ii )
     {
         auto item = fImpl->statusList->item( ii );
