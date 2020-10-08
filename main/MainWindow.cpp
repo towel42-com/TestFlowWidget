@@ -18,21 +18,6 @@ CMainWindow::CMainWindow( QWidget* parent )
     fImpl->setupUi( this );
     fImpl->widgetDump->setModel( fModel );
 
-    auto lFindIcon = 
-        []( const QDir & xRelToDir, const QString & xFileName ) -> std::pair< bool, QString > 
-    {
-        if ( QFileInfo::exists( xRelToDir.absoluteFilePath( "xml/" + xFileName ) ) )
-            return std::make_pair( true, xRelToDir.absoluteFilePath( "xml/" + xFileName ) );
-        if ( QFileInfo::exists( xRelToDir.absoluteFilePath( "xml/images/" + xFileName ) ) )
-            return std::make_pair( true, xRelToDir.absoluteFilePath( "xml/images/" + xFileName ) );
-        if ( QFileInfo::exists( xRelToDir.absoluteFilePath( "images/" + xFileName ) ) )
-            return std::make_pair( true, xRelToDir.absoluteFilePath( "images/" + xFileName ) );
-        return std::make_pair( false, xFileName );
-    };
-
-    fImpl->flowWidget->mSetFindIconFunc( lFindIcon );
-    //mDemoFlowWidget();
-
     fImpl->takeButton->setEnabled( false );
     fImpl->placeButton->setEnabled( false );
     fImpl->hideButton->setEnabled( false );
