@@ -47,12 +47,8 @@ CMainWindow::CMainWindow( QWidget* parent )
         fImpl->flowWidget->mSetElideText( fImpl->elideTextInFlowWidget->isChecked() );
     } );
 
-    connect( fImpl->disableFlowWidget, &QCheckBox::clicked,
-             [this]()
-    {
-        fImpl->flowWidget->setEnabled( fImpl->disableFlowWidget->isChecked() );
-        fImpl->disableFlowWidget->setText( fImpl->disableFlowWidget->isChecked() ? tr( "Enable Flow Widget" ) : tr( "Disable Flow Widget" ) );
-    } );
+    connect( fImpl->summarizeStatus, &QCheckBox::clicked, fImpl->flowWidget, &CFlowWidget::mSetSummarizeStatus );
+    connect( fImpl->alignStatus, &QCheckBox::clicked, fImpl->flowWidget, &CFlowWidget::mSetAlignStatus );
 
     connect( fImpl->takenItems, &QListWidget::itemSelectionChanged,
              [this]()
@@ -340,7 +336,7 @@ void CMainWindow::slotFlowWidgetItemSelected( CFlowWidgetItem* xItem, bool xSele
         lText = xItem->mDump( true, false );
         fImpl->jsonDump->setPlainText( lText );
 
-        lSelectedIDs = xItem->mStateStatuses();
+        lSelectedIDs = xItem->mStateStatuses( true );
     }
 
     for ( int ii = 0; ii < fImpl->statusList->count(); ++ii )

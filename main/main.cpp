@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <cstring>
 
+#include <QTreeWidget>
+
 int main( int argc, char** argv )
 {
     QApplication appl( argc, argv );
