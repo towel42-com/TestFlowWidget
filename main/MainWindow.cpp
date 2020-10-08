@@ -84,7 +84,7 @@ CMainWindow::CMainWindow( QWidget* parent )
             return;
         QIcon lIcon = QIcon( lPath );
         fImpl->flowWidget->mRegisterStateStatus( lID, lDesc, lIcon );
-        this->mLoadStatus( std::make_tuple( lID, lDesc, lIcon ) );
+        this->mLoadStatus( SRegisteredStatusInfo( lID, lDesc, lIcon, false ) );
     } );
 
     connect( fImpl->setText, &QAbstractButton::clicked,
@@ -384,13 +384,13 @@ void CMainWindow::mLoadStatuses()
     }
 }
 
-void CMainWindow::mLoadStatus( const std::tuple< int, QString, QIcon >& ii )
+void CMainWindow::mLoadStatus( const SRegisteredStatusInfo & ii )
 {
-    auto lCurr = new QListWidgetItem( std::get< 2 >( ii ), std::get< 1 >( ii ), nullptr, QListWidgetItem::ItemType::UserType + std::get< 0 >( ii ) );
-    if ( std::get< 0 >( ii ) == CFlowWidget::EStates::eDisabled )
+    auto lCurr = new QListWidgetItem( ii.dIcon, ii.dStateDesc, nullptr, QListWidgetItem::ItemType::UserType + ii.dStateID );
+    if ( ii.dStateID == CFlowWidget::EStates::eDisabled )
         lCurr->setFlags( lCurr->flags() & ~Qt::ItemIsSelectable );
     lCurr->setFlags( lCurr->flags() | Qt::ItemIsUserCheckable );
-    lCurr->setIcon( std::get< 2 >( ii ) );
+    lCurr->setIcon( ii.dIcon );
     lCurr->setCheckState( Qt::Unchecked );
     fImpl->statusList->addItem( lCurr );
 }

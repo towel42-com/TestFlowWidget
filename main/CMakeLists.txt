@@ -42,7 +42,8 @@ add_executable( TestFlowWidget WIN32
                  ${_CMAKE_MODULE_FILES}
           )
 set_target_properties( TestFlowWidget PROPERTIES FOLDER Apps )
-          
+add_definitions( -DNON_VIS_BUILD=1 )          
+
 target_link_libraries( TestFlowWidget 
                  Qt5::Widgets
                  Qt5::Core

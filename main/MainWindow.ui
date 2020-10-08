@@ -449,7 +449,7 @@
   <customwidget>
    <class>CFlowWidget</class>
    <extends>QFrame</extends>
-   <header>../SABUtils/FlowWidget.h</header>
+   <header>../SABUtils/FlowNavigator.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

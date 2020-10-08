@@ -6,6 +6,7 @@
 class CFlowWidgetItem;
 class QStandardItemModel;
 class QListWidgetItem;
+struct SRegisteredStatusInfo;
 namespace Ui{ class CMainWindow; }
 class CMainWindow : public QDialog
 {
@@ -21,7 +22,7 @@ public Q_SLOTS:
 private:
     void mLoadStatuses();
 
-    void mLoadStatus( const std::tuple< int, QString, QIcon > & ii );
+    void mLoadStatus( const SRegisteredStatusInfo& ii );
 
     void mDemoFlowWidget();
     void mLoadFromXML();
