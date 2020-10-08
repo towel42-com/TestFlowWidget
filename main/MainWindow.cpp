@@ -9,6 +9,23 @@
 #include <QStandardItemModel>
 #include <QDebug>
 #include <QMessageBox>
+#include <algorithm>
+
+QList< int > mergeStates( const QList< QList< int > >& xStates )
+{
+    QList< int > lRetVal;
+
+    for ( int ii = 0; ii < xStates.count(); ++ii )
+    {
+        for ( int jj = 0; jj < xStates[ ii ].count(); ++jj )
+        {
+            if ( lRetVal.indexOf( xStates[ ii ][ jj ] ) == -1 )
+                lRetVal << xStates[ ii ][ jj ];
+        }
+    }
+    return lRetVal;
+}
+
 
 CMainWindow::CMainWindow( QWidget* parent )
     : QDialog( parent ),
@@ -25,6 +42,8 @@ CMainWindow::CMainWindow( QWidget* parent )
     fImpl->disableButton->setEnabled( false );
     fImpl->enableButton->setEnabled( false );
     fImpl->elideTextInFlowWidget->setChecked( fImpl->flowWidget->mElideText() );
+    fImpl->summarizeStatus->setChecked( fImpl->flowWidget->mSummarizeStatus() );
+    fImpl->defaultSummarize->setChecked( true );
 
     connect( fImpl->elideTextInFlowWidget, &QCheckBox::clicked,
              [this]()
@@ -32,7 +51,68 @@ CMainWindow::CMainWindow( QWidget* parent )
         fImpl->flowWidget->mSetElideText( fImpl->elideTextInFlowWidget->isChecked() );
     } );
 
-    connect( fImpl->summarizeStatus, &QCheckBox::clicked, fImpl->flowWidget, &CFlowWidget::mSetSummarizeStatus );
+    connect( fImpl->summarizeStatus, &QGroupBox::clicked, fImpl->flowWidget, &CFlowWidget::mSetSummarizeStatus );
+    
+    connect( fImpl->defaultSummarize, &QCheckBox::clicked, 
+             [this]()
+    {
+        fImpl->flowWidget->mSetMergeStatesFunction( {} );
+    } );
+
+    connect( fImpl->parentOnlySummarize, &QCheckBox::clicked,
+             [ this ]()
+    {
+        fImpl->flowWidget->mSetMergeStatesFunction(
+            []( CFlowWidgetItem* /*xParent*/, const QList< int >& lParentLocalStates, const QList< QList< int > >& xChildStates )
+        {
+            if ( !lParentLocalStates.isEmpty() )
+                return lParentLocalStates;
+            return mergeStates( QList< QList< int > >() << lParentLocalStates << xChildStates );
+        } );
+    } );
+    connect( fImpl->allSummarize, &QCheckBox::clicked,
+             [this]()
+    {
+        fImpl->flowWidget->mSetMergeStatesFunction(
+            []( CFlowWidgetItem* /*xParent*/, const QList< int >& lParentLocalStates, const QList< QList< int > >& xChildStates )
+        {
+            return mergeStates( QList< QList< int > >() << lParentLocalStates << xChildStates );
+        } );
+    } );
+    connect( fImpl->onlyErrorSummarize, &QCheckBox::clicked,
+             [this]()
+    {
+        fImpl->flowWidget->mSetMergeStatesFunction(
+            []( CFlowWidgetItem* /*xParent*/, const QList< int >& lParentLocalStates, const QList< QList< int > >& xChildStates )
+        {
+            if ( !lParentLocalStates.isEmpty() )
+                return lParentLocalStates;
+
+            auto lRetVal = mergeStates( QList< QList< int > >() << lParentLocalStates << xChildStates );
+            if ( lRetVal.indexOf( CFlowWidget::EStates::eRunCompletedWithError ) != -1 )
+                lRetVal = QList< int >() << CFlowWidget::EStates::eRunCompletedWithError;
+            else
+                lRetVal.clear();
+            return lRetVal;
+        } );
+    } );
+    connect( fImpl->mostSevereSummarize, &QCheckBox::clicked,
+             [this]()
+    {
+        fImpl->flowWidget->mSetMergeStatesFunction(
+            []( CFlowWidgetItem* /*xParent*/, const QList< int >& lParentLocalStates, const QList< QList< int > >& xChildStates )
+        {
+            if ( !lParentLocalStates.isEmpty() )
+                return lParentLocalStates;
+
+            auto lRetVal = mergeStates( QList< QList< int > >() << lParentLocalStates << xChildStates );
+            std::sort( lRetVal.begin(), lRetVal.end() );
+            if ( !lRetVal.isEmpty() )
+                return QList< int >() << lRetVal.back();
+            return lRetVal;
+        } );
+    } );
+
     connect( fImpl->alignStatus, &QCheckBox::clicked, fImpl->flowWidget, &CFlowWidget::mSetAlignStatus );
 
     connect( fImpl->takenItems, &QListWidget::itemSelectionChanged,
