@@ -1,4 +1,3 @@
-#undef QT_NO_DEBUG_OUTPUT
 #include "MainWindow.h"
 #include "SABUtils/FileUtils.h"
 #include <QApplication>

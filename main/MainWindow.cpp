@@ -1,4 +1,3 @@
-#undef QT_NO_DEBUG_OUTPUT
 #include "MainWindow.h"
 #include "ui_MainWindow.h"  
 #include "SABUtils/QtDumper.h"
