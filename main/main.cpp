@@ -4,11 +4,14 @@
 #include <QApplication>
 #include <QDebug>
 #include <cstring>
+#include <iostream>
 
 #include <QTreeWidget>
 
 int main( int argc, char** argv )
 {
+    // std::cout << sizeof( uintptr_t ) << "\n";
+
     QApplication appl( argc, argv );
     Q_INIT_RESOURCE( application );
 
