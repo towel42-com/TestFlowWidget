@@ -397,7 +397,7 @@ void CMainWindow::slotFlowWidgetItemSelected( CFlowWidgetItem* xItem, bool xSele
             (void)lCurr;
         }
 
-        lText = xItem->mDump( true, false );
+        lText = xItem->mDump( true, false, false );
         fImpl->jsonDump->setPlainText( lText );
 
         lSelectedIDs = xItem->mStateStatuses( true );
@@ -476,7 +476,7 @@ void CMainWindow::mLoadStatus( const SRegisteredStatusInfo & ii )
 
 void CMainWindow::mDumpFlowWidget()
 {
-    auto lText = fImpl->flowWidget->mDump( false );
+    auto lText = fImpl->flowWidget->mDump( false, false );
     fImpl->jsonDump->setPlainText( lText );
 
     dumpWidgetAndChildren( fImpl->flowWidget, fModel );
@@ -518,7 +518,7 @@ void CMainWindow::slotStatusItemSelected( QListWidgetItem * /*xListWidgetItem*/ 
             continue;
         states << item->type() - QListWidgetItem::ItemType::UserType;
     }
-    selectedItem->mSetStateStatus( states );
+    selectedItem->mSetStateStatuses( states );
 };
 
 void CMainWindow::mLoadFromXML()
