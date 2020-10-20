@@ -51,15 +51,15 @@ CMainWindow::CMainWindow( QWidget* parent )
     } );
 
     connect( fImpl->summarizeStatus, &QGroupBox::clicked, fImpl->flowWidget, &CFlowWidget::mSetSummarizeStatus );
-    
-    connect( fImpl->defaultSummarize, &QCheckBox::clicked, 
+
+    connect( fImpl->defaultSummarize, &QCheckBox::clicked,
              [this]()
     {
         fImpl->flowWidget->mSetMergeStatesFunction( {} );
     } );
 
     connect( fImpl->parentOnlySummarize, &QCheckBox::clicked,
-             [ this ]()
+             [this]()
     {
         fImpl->flowWidget->mSetMergeStatesFunction(
             []( CFlowWidgetItem* /*xParent*/, const QList< int >& lParentLocalStates, const QList< QList< int > >& xChildStates )
@@ -262,7 +262,7 @@ CMainWindow::CMainWindow( QWidget* parent )
             lPrefix = tr( "<li>Current Selection: %1</li>" ).arg( lItemSelected->mFullText() );
         if ( lItemParent )
             lPrefix += tr( "<li>Parent of Selection: %1</li>" ).arg( lItemParent->mFullText() );
-        
+
         if ( !lPrefix.isEmpty() )
             lPrefix = "<ul>" + lPrefix + "</ul>";
         auto lLabel = lPrefix + tr( "Place Where:" );
@@ -389,7 +389,7 @@ void CMainWindow::slotFlowWidgetItemSelected( CFlowWidgetItem* xItem, bool xSele
         fImpl->tclProcName->setText( xItem->mGetAttribute( "tclproc" ) );
 
         auto lAllAttributes = xItem->mGetAttributes();
-        for( auto && ii : lAllAttributes )
+        for ( auto&& ii : lAllAttributes )
         {
             auto lKey = ii.first;
             auto lValue = ii.second;
@@ -457,13 +457,13 @@ void CMainWindow::mLoadStatuses()
 {
     fImpl->statusList->clear();
     auto lStatuses = fImpl->flowWidget->mGetRegisteredStatuses();
-    for( auto && ii : lStatuses )
+    for ( auto&& ii : lStatuses )
     {
         mLoadStatus( ii );
     }
 }
 
-void CMainWindow::mLoadStatus( const SRegisteredStatusInfo & ii )
+void CMainWindow::mLoadStatus( const SRegisteredStatusInfo& ii )
 {
     auto lCurr = new QListWidgetItem( ii.dIcon, ii.dStateDesc, nullptr, QListWidgetItem::ItemType::UserType + ii.dStateID );
     if ( ii.dStateID == CFlowWidget::EStates::eDisabled )
@@ -482,7 +482,7 @@ void CMainWindow::mDumpFlowWidget()
     dumpWidgetAndChildren( fImpl->flowWidget, fModel );
     fImpl->widgetDump->expandAll();
     mCollapseWidgetType( QModelIndex() );
- 
+
     for ( auto ii = 0; ii < fModel->columnCount(); ++ii )
         fImpl->widgetDump->resizeColumnToContents( ii );
 }
@@ -504,7 +504,7 @@ void CMainWindow::mCollapseWidgetType( const QModelIndex& parent )
     }
 }
 
-void CMainWindow::slotStatusItemSelected( QListWidgetItem * /*xListWidgetItem*/ )
+void CMainWindow::slotStatusItemSelected( QListWidgetItem* /*xListWidgetItem*/ )
 {
     auto selectedItem = fImpl->flowWidget->mSelectedItem();
     if ( !selectedItem )
@@ -530,7 +530,7 @@ void CMainWindow::mLoadFromXML()
     mLoadFromXML( lFileName );
 }
 
-void CMainWindow::mLoadFromXML( const QString & xFileName )
+void CMainWindow::mLoadFromXML( const QString& xFileName )
 {
     auto lRetVal = fImpl->flowWidget->mLoadFromXML( xFileName );
     if ( !lRetVal.second.isEmpty() )

@@ -15,7 +15,7 @@ int main( int argc, char** argv )
     Q_INIT_RESOURCE( application );
 
     QString lFileName;
-    for( int ii = 1; ii < argc; ++ii )
+    for ( int ii = 1; ii < argc; ++ii )
     {
         if ( std::strncmp( argv[ ii ], "-xml", 4 ) == 0 )
         {
